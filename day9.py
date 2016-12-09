@@ -2,24 +2,32 @@
 import re
 
 
+def part1():
+    with open('day9.txt') as f:
+        line = f.read().strip()
+        #line = 'X(8x2)(3x3)ABCY'
+        #line = '(6x1)(1x3)A'
+        #line = 'A(2x2)BCD(2x2)EFG'
+        result = ""
+        while len(line) > 0:
+            #look for first instance of (AxB) in line
+            m = re.search('\((\d+)x(\d+)\)',line)
+            #if an (AxB) is found:
+            # - add everything up to the start of (AxB) to result string
+            # - add the repeating section to result string
+            # - line now becomes everything from the end of the repeating section to the end of the string
+            # Loop repeats and looks for first match in the new line
+            if m:
+                result = result + line[:m.start()] + line[m.end():m.end()+int(m.group(1))]*int(m.group(2))
+                line =  line[m.end()+int(m.group(1)):]
+                #print(len(result))
 
-with open('day9.txt') as f:
-    line = f.read()
-    go = True
-    ignore = (0,0)
-    print(line)
-    while go:
-        m = re.search('\((\d+)x(\d+)\)',line)
-        if m:
-            print('({}x{})'.format(m.group(1),m.group(2)))
-            if m.start() not in range(ignore[0],ignore[1]):
+            # if not (AxB) is found:
+            # - everything left in the line goes into the result string
+            # - line is emptied to break the loop
+            else:
+                result = result + line
+                line = ""
+        print(len(result))
 
-                t = [m.start(),m.end(),int(m.group(1)),int(m.group(2))]
-                line = line[0:t[0]] + line[t[1]:t[1]+t[2]]*t[3] + line[t[1]+t[2]:]
-                ignore = (t[0],t[0]+t[2]*t[3])
-            # Need to split up line so only the new stuff gets fed into regex
-
-        else:
-            go = False
-    print(len(line))
-    print('****')
+part1()
