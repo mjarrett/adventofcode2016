@@ -3,7 +3,7 @@
 from collections import deque
 
 data = 3014387
-#data = 5
+#data = 6
 #print(int(data/2)+1)
 
 circle = deque([ [x,1] for x in range(1,data+1)])
@@ -32,8 +32,7 @@ def part2(circle,data):
 
         if circle[0][1] > 0:
             circle[0][1] += circle[oppo][1]
-            circle[oppo][1] = 0
+            del circle[oppo]
             circle.rotate(-1)
-        elif circle[0][1] == 0:
-            del circle[0]
+
 print(part2(circle,data))
