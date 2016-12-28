@@ -2,15 +2,19 @@
 
 top = 9
 
-nums = [ x for x in range(top+1) ]
-#print(nums)
+
 with open('day20.txt') as f:
-    for line in f:
-        r = line.strip().split('-')
-        amin = int(r[0])
-        amax = int(r[1])+1
-        #print(nums)
-        #print(amin,amax)
-        nums[amin:amax] = [-1]*(amax-amin)
-    nums = [ x for x in nums if x > -1]
-    print(nums)
+    data = [ x.split('-') for x in f.read().split()]
+data = [ [int(x[0]),int(x[1])] for x in data ]
+data = sorted(data)
+#print(data)
+
+count = 0
+
+for i,d in enumerate(data):
+
+    if count < d[0]:
+        print(count)
+        break
+    print(count)
+    count = d[1]+1
